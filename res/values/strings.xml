@@ -11,5 +11,9 @@
     <string name="body">This is the tweet body</string>
     <string name="name_label">name</string>
     <string name="timestamp_label">Time Stamp</string>
+    <string name="title_activity_tweet">Tweet</string>
+    <string name="compost_username_label">\@foo</string>
+    <string name="compost_name">name</string>
+    <string name="hint_edit_text">What happening?</string>
 
 </resources>

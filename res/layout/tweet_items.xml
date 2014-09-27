@@ -17,6 +17,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/ivProfileImage"
+        android:textStyle="bold"
+        android:textSize="8dp"
         android:text="@string/username" />
 
     <TextView
@@ -25,7 +27,10 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/tvUserName"
         android:layout_below="@+id/tvUserName"
-        android:text="@string/body" />
+        android:text="@string/body" 
+        android:textSize="8dp"
+        android:autoLink="all"
+        android:linksClickable="true"/>
 
     <TextView
         android:id="@+id/tvName"
@@ -33,6 +38,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/tvUserName"
+        android:textSize="8dp"
+        android:ellipsize="end"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:text="@string/name_label" />
 
     <TextView
@@ -41,6 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:textSize="8dp"
         android:text="@string/timestamp_label" />
 
 </RelativeLayout>
