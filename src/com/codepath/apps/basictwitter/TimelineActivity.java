@@ -82,7 +82,7 @@ public class TimelineActivity extends Activity {
 			private void onLoadMore(int page, int totalItemCount) {
 				Log.i("DEBUG", "Fetching page = " + page);
 				Log.i("DEBUG", "Fetching totalItemCount = " + totalItemCount);
-//				populateTimeline(page * 20, max_id);
+				populateTimeline();
 			}
 		});
 	}
