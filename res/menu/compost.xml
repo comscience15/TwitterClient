@@ -4,7 +4,7 @@
         android:id="@+id/miTweet"
         android:title="Tweet"
         android:icon="@drawable/pen"
-        android:onClick="onImgFilter"
+        android:onClick="onMiTweet"
         android:showAsAction="always" />
 
 </menu>

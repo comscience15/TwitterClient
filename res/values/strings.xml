@@ -15,5 +15,7 @@
     <string name="compost_username_label">\@foo</string>
     <string name="compost_name">name</string>
     <string name="hint_edit_text">What happening?</string>
+    <string name="btn_tweet">Tweet</string>
+    <string name="btn_cancel">Cancel</string>
 
 </resources>

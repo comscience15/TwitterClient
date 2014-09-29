@@ -104,8 +104,7 @@ public class TimelineActivity extends Activity {
 		});
 	}
 	
-	public void onImgFilter(MenuItem mi) {
-		Toast.makeText(this, "Image filter is opening!", Toast.LENGTH_SHORT).show();
+	public void onMiTweet(MenuItem mi) {
 		// Create an intent
 		Intent i = new Intent(TimelineActivity.this, TweetActivity.class);
 

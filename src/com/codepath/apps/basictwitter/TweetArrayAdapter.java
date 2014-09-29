@@ -3,7 +3,7 @@ package com.codepath.apps.basictwitter;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.codepath.apps.basictwitter.models.Tweet;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -22,6 +21,7 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 	}
 
 	// use getView is how data item is get translated into actual view display on listview
+	@SuppressLint("ResourceAsColor")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// Get the data item for position
@@ -49,7 +49,9 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		tvBody.setText(tweet.getBody());
 		
 		tvName.setText("@" + tweet.getUser().getName());
+		tvName.setTextColor(R.color.Gray);
 		tvTimeStamp.setText(setToDays(tweet.getCreatedAt()));
+		tvTimeStamp.setTextColor(R.color.Gray);
 		return v;
 	}
 

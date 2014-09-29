@@ -24,11 +24,8 @@ public class TwitterApplication extends com.activeandroid.app.Application {
 		TwitterApplication.context = this;
 
 		// Create global configuration and initialize ImageLoader with this configuration
-		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
-				cacheInMemory().cacheOnDisc().build();
-		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
-		.defaultDisplayImageOptions(defaultOptions)
-		.build();
+		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().cacheInMemory().cacheOnDisc().build();
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext()).defaultDisplayImageOptions(defaultOptions).build();
 		ImageLoader.getInstance().init(config);
 	}
 
