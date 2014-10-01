@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,11 +20,15 @@ import android.widget.Toast;
 import com.codepath.apps.basictwitter.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
+import eu.erikw.PullToRefreshListView;
+import eu.erikw.PullToRefreshListView.OnRefreshListener;
+
 public class TimelineActivity extends Activity {
+	PullToRefreshListView ptlTimeline;
 	private TwitterClient client;
 	private ArrayList<Tweet> tweets;
 	private ArrayAdapter<Tweet> aTweets;
-	private ListView lvTweets;
+//	private ListView lvTweets;
 	private int max_id = 1;
 	
 	@Override
@@ -36,13 +41,22 @@ public class TimelineActivity extends Activity {
 	}
 	
 	private void initializeVariables() {
-		lvTweets = (ListView) findViewById(R.id.ivTweets);
+		ptlTimeline = (PullToRefreshListView) findViewById(R.id.ivTweets);
+//		lvTweets = (ListView) findViewById(R.id.ivTweets);
 		tweets = new ArrayList<Tweet>();
 		aTweets = new TweetArrayAdapter(this, tweets);
-		lvTweets.setAdapter(aTweets);
+//		lvTweets.setAdapter(aTweets);
+		ptlTimeline.setOnRefreshListener(new OnRefreshListener() {
+			
+			@Override
+			public void onRefresh() {
+				populateTimeline();
+			}
+		});
+		ptlTimeline.setAdapter(aTweets);
 		
 		//set endless scroll
-		lvTweets.setOnScrollListener(new OnScrollListener() {
+		ptlTimeline.setOnScrollListener(new OnScrollListener() {
 			private int visibleThreshold = 5;
 			private int currentPage = 0;
 			private int previousTotalItemCount = 0;
@@ -79,10 +93,12 @@ public class TimelineActivity extends Activity {
 				}
 			}
 
-			private void onLoadMore(int page, int totalItemCount) {
+			public void onLoadMore(int page, int totalItemCount) {
 				Log.i("DEBUG", "Fetching page = " + page);
 				Log.i("DEBUG", "Fetching totalItemCount = " + totalItemCount);
-				populateTimeline();
+
+					Tweet last = (Tweet) ptlTimeline.getItemAtPosition(totalItemCount-1);
+					populateTimeline();
 			}
 		});
 	}

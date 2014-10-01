@@ -1,8 +1,12 @@
 package com.codepath.apps.basictwitter;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import org.ocpsoft.prettytime.PrettyTime;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.format.DateUtils;
@@ -12,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.codepath.apps.basictwitter.models.Tweet;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -45,10 +51,10 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		
 		// Populate views with tweet data
 		imageLoader.displayImage(tweet.getUser().getProfileImageUrl(), ivProfileImage);
-		tvUserName.setText(tweet.getUser().getScreenName());
+		tvUserName.setText(tweet.getUser().getName());
 		tvBody.setText(tweet.getBody());
 		
-		tvName.setText("@" + tweet.getUser().getName());
+		tvName.setText(tweet.getUser().getScreenName());
 		tvName.setTextColor(R.color.Gray);
 		tvTimeStamp.setText(setToDays(tweet.getCreatedAt()));
 		tvTimeStamp.setTextColor(R.color.Gray);
@@ -68,9 +74,10 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 			e.printStackTrace();
 		}
 		relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
-		
-		
-		return relativeDate;
+		String relativeTimeInt = relativeDate.substring(0,relativeDate.indexOf(" "));
+		String relativeTimeStr = relativeDate.substring(relativeDate.indexOf(" ") + 1, relativeDate.indexOf(" ") + 2);
+
+		return relativeTimeInt + relativeTimeStr;
 	}
 	
 	

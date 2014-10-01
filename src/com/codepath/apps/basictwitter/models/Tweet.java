@@ -1,26 +1,30 @@
 package com.codepath.apps.basictwitter.models;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.activeandroid.query.Delete;
+
 public class Tweet {
-	private String body;
-	private long uid;
-	private String createdAt;
+	private long id;
+	private String body, createdAt, handle, imageUrl, name;
 	private User user;
+	
 	
 	// create a method extract above values from JSON -- a single tweet
 	public static Tweet fromJSON(JSONObject jsonObject){
 		Tweet tweet = new Tweet();
 		// extract values from the json to populate the member variables
 		try{
+			tweet.name = jsonObject.getJSONObject("user").getString("name");
+			tweet.handle = "@" + jsonObject.getJSONObject("user").getString("screen_name");
 			tweet.body = jsonObject.getString("text");
-			tweet.uid = jsonObject.getLong("id");
+			tweet.id = jsonObject.getLong("id");
 			tweet.createdAt = jsonObject.getString("created_at");
+			tweet.imageUrl = jsonObject.getJSONObject("user").getString("profile_image_url");
 			tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
 		}catch (JSONException e){
 			e.printStackTrace();
@@ -58,8 +62,8 @@ public class Tweet {
 		return body;
 	}
 
-	public long getUid() {
-		return uid;
+	public long getId() {
+		return id;
 	}
 
 	public String getCreatedAt() {
@@ -70,4 +74,15 @@ public class Tweet {
 		return user;
 	}
 	
+	public Tweet() {
+		super();
+	}
+	
+	public String getImageUrl() {
+		return imageUrl;
+	}
+	
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
 }

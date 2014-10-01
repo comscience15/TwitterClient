@@ -29,6 +29,7 @@ public class TwitterClient extends OAuthBaseClient {
 	public static final String REST_CONSUMER_KEY = "hQaNA54DLGo7t2vvL4FIIV3JT";       // Change this
 	public static final String REST_CONSUMER_SECRET = "URYRmKZD3ErnzEvqz8emPDLLYVQi0ufpSMpLfvaFgOwTKvaat8"; // Change this
 	public static final String REST_CALLBACK_URL = "oauth://cpbasictweets"; // Change this (here and in manifest)
+	TweetActivity tv = new TweetActivity();
 
 	public TwitterClient(Context context) {
 		super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
@@ -38,25 +39,41 @@ public class TwitterClient extends OAuthBaseClient {
 		String apiUrl = getApiUrl("statuses/home_timeline.json");
 		RequestParams params = new RequestParams();
 		params.put("since_id", "1");
-		params.put("max_id", "999999999999999999");
+//		params.put("max_id", "999999999999999999");
 		client.get(apiUrl, params, handler); // if no parameter, put "params" to be null
-//		client.post(arg0, arg1);
-//		client.put(arg0, arg1);
-//		client.delete(arg0, arg1);
 	}
 	
-	public void postTweet(AsyncHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("direct_messages/new.json");
+	public void getHomeTimeLineMore(long max_id, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/home_timeline.json");
 		RequestParams params = new RequestParams();
-		params.put("screen_name", "comscience15");
-		client.get(apiUrl, null, handler);
+		params.put("count", "20");
+		params.put("max_id", String.valueOf(max_id));
+		client.get(apiUrl, params, handler); // if no parameter, put "params" to be null
 	}
 	
-	public void checkUserProfile(AsyncHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("account/verify_credentials.json");
+	public void postTweet(String status, String reply, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/update.json");
 		RequestParams params = new RequestParams();
-//		params.put("status", "140");
-		client.get(apiUrl, null, handler);
+		params.put("status", status);
+		client.post(apiUrl, params, handler);
+	}
+	public void verifyCredentails(AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("account/verify_credentails.json");
+		getClient().get(apiUrl, handler);
+	}
+	
+	public void checkUserProfile(String screen, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("users/show.json");
+		RequestParams params = new RequestParams();
+		params.put("screen_name", screen);
+		client.get(apiUrl, params, handler);
+	}
+	
+	public void getTweetDetail(long tweetId, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statues/show.json");
+		RequestParams params = new RequestParams();
+		params.put("id", String.valueOf(tweetId));
+		client.get(apiUrl, params, handler);
 	}
 	
 	// CHANGE THIS

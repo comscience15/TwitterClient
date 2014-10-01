@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 public class User {
 	private String name;
-	private long uid;
+	private long id;
 	private String screenName;
 	private String profileImageUrl;
 
@@ -14,11 +14,12 @@ public class User {
 		User u = new User();
 		try {
 			u.name = json.getString("name");
-			u.uid = json.getLong("id");
-			u.screenName = json.getString("screen_name");
+			u.id = json.getLong("id");
+			u.screenName = "@" + json.getString("screen_name");
 			u.profileImageUrl = json.getString("profile_image_url");
 		}catch (JSONException e){
 			e.printStackTrace();
+			return null;
 		}
 		return u;
 	}
@@ -28,7 +29,7 @@ public class User {
 	}
 
 	public long getUid() {
-		return uid;
+		return id;
 	}
 
 	public String getScreenName() {
@@ -37,6 +38,18 @@ public class User {
 
 	public String getProfileImageUrl() {
 		return profileImageUrl;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public void setScreenName(String screenName) {
+		this.screenName = screenName;
+	}
+	
+	public void setProfileImageUrl(String profileImageUrl) {
+		this.profileImageUrl = profileImageUrl;
 	}
 
 }

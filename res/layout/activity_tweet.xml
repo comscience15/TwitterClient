@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/ivProfileImageC"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:src="@drawable/ic_launcher" />
@@ -27,7 +27,15 @@
         android:layout_alignLeft="@+id/tvUserNameC"
         android:layout_below="@+id/tvUserNameC"
         android:text="@string/compost_name" />
-
+	
+    <TextView
+        android:id="@+id/tvCharCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etTweet"
+        android:layout_below="@+id/etTweet"
+        android:layout_marginTop="10dp"/>
+    
     <EditText
         android:id="@+id/etTweet"
         android:layout_width="wrap_content"
@@ -35,31 +43,12 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/ivProfileImageC"
+        android:inputType="textMultiLine"
+        android:maxLength="140"
         android:ems="10"
         android:hint="@string/hint_edit_text" >
 
         <requestFocus />
     </EditText>
-
-    <Button
-        android:id="@+id/btnTweet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvNameC"
-        android:layout_below="@+id/etTweet"
-        android:layout_marginTop="25dp"
-        android:onClick="onTweet"
-        android:text="@string/btn_tweet" />
-
-    <Button
-        android:id="@+id/btnCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btnTweet"
-        android:layout_alignBottom="@+id/btnTweet"
-        android:layout_marginLeft="54dp"
-        android:layout_toRightOf="@+id/btnTweet"
-        android:onClick="onCancel"
-        android:text="@string/btn_cancel" />
 
 </RelativeLayout>
