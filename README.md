@@ -40,9 +40,9 @@ Completed User Stories:
   - [x] Optional: Links in tweets are clickable and will launch the web browser
   - [x] Required: User can click a “Compose” icon in the Action Bar on the top right
   - [x] Required: User can then enter a new tweet and post this to twitter
-  - [ ] Required: User is taken back to home timeline with new tweet visible in timeline
+  - [x] Required: User is taken back to home timeline with new tweet visible in timeline
   - [x] Optional: User can see a counter with total number of characters left for tweet
-  - [/] Advanced: User can refresh tweets timeline by pulling down to refresh (i.e pull-to-refresh) -- partially
+  - [x] Advanced: User can refresh tweets timeline by pulling down to refresh (i.e pull-to-refresh) 
   - [ ] Advanced: Tweets are persisted into sqlite and can be displayed from the local DB
   - [ ] Advanced: User can tap a tweet to display a "detailed" view of that tweet
   - [ ] Advanced: User can select "reply" from detail view to respond to a tweet
@@ -53,7 +53,7 @@ Completed User Stories:
  
 Walkthrough of all users stories:
 
-![Video Walkthrough](twitter.gif)
+![Video Walkthrough](twitter1.gif)
 
 GIF created with [LiceCap]
 
