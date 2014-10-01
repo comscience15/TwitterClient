@@ -1,14 +1,18 @@
 package com.codepath.apps.basictwitter.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.activeandroid.Model;
 import com.activeandroid.query.Delete;
+import com.activeandroid.query.Select;
 
-public class Tweet {
+public class Tweet extends Model implements Serializable{
 	private long id;
 	private String body, createdAt, handle, imageUrl, name;
 	private User user;
@@ -34,6 +38,25 @@ public class Tweet {
 		return tweet;
 	}
 
+	public static ArrayList<Tweet> fromJSON(JSONArray jsonArray) {
+		ArrayList<Tweet> tweets = new ArrayList<Tweet>(jsonArray.length());
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObj = null;
+			try {
+				jsonObj = jsonArray.getJSONObject(i);
+			} catch (Exception e) {
+				e.printStackTrace();
+				continue;
+			}
+			
+			Tweet tweet = Tweet.fromJSON(jsonObj);
+			if (tweet != null) {
+				tweets.add(tweet);
+			}
+		}
+		return tweets;
+	}
+	
 	public static ArrayList<Tweet> fromJSONArray(JSONArray jsonArray) {
 		ArrayList<Tweet> tweets = new ArrayList<Tweet>(jsonArray.length());
 		
@@ -62,7 +85,7 @@ public class Tweet {
 		return body;
 	}
 
-	public long getId() {
+	public long getUId() {
 		return id;
 	}
 
@@ -84,5 +107,13 @@ public class Tweet {
 	
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
+	}
+	
+	public static List<Tweet> getAll() {
+		return new Select().from(Tweet.class).execute();
+	}
+
+	public static void deleteAll() {
+		new Delete().from(Tweet.class).execute();
 	}
 }
