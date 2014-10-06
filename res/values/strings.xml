@@ -18,5 +18,6 @@
     <string name="btn_tweet">Tweet</string>
     <string name="btn_cancel">Cancel</string>
     <string name="tweet">Tweet</string>
+    <string name="title_activity_user_profile">UserProfileActivity</string>
 
 </resources>

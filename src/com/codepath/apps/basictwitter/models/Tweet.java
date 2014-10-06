@@ -1,20 +1,15 @@
 package com.codepath.apps.basictwitter.models;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.activeandroid.Model;
-import com.activeandroid.query.Delete;
-import com.activeandroid.query.Select;
-
-public class Tweet extends Model implements Serializable{
-	private long id;
-	private String body, createdAt, handle, imageUrl, name;
+public class Tweet extends BaseModel{
+	private static final long serialVersionUID = 1L;
+//	private long id;
+//	private String body, createdAt, handle, imageUrl, name;
 	private User user;
 	
 	
@@ -23,12 +18,7 @@ public class Tweet extends Model implements Serializable{
 		Tweet tweet = new Tweet();
 		// extract values from the json to populate the member variables
 		try{
-			tweet.name = jsonObject.getJSONObject("user").getString("name");
-			tweet.handle = "@" + jsonObject.getJSONObject("user").getString("screen_name");
-			tweet.body = jsonObject.getString("text");
-			tweet.id = jsonObject.getLong("id");
-			tweet.createdAt = jsonObject.getString("created_at");
-			tweet.imageUrl = jsonObject.getJSONObject("user").getString("profile_image_url");
+			tweet.jsonObject = jsonObject;
 			tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
 		}catch (JSONException e){
 			e.printStackTrace();
@@ -81,39 +71,39 @@ public class Tweet extends Model implements Serializable{
 		return getBody() + "  " + getUser().getScreenName();
 	}
 	
-	public String getBody() {
-		return body;
+	public String getBody(){
+		return getString("text");
 	}
 
 	public long getUId() {
-		return id;
+		return getLong("id");
 	}
 
 	public String getCreatedAt() {
-		return createdAt;
+		return getString("created_at");
 	}
 
 	public User getUser() {
 		return user;
 	}
 	
-	public Tweet() {
-		super();
-	}
-	
-	public String getImageUrl() {
-		return imageUrl;
-	}
-	
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
-	}
-	
-	public static List<Tweet> getAll() {
-		return new Select().from(Tweet.class).execute();
-	}
-
-	public static void deleteAll() {
-		new Delete().from(Tweet.class).execute();
-	}
+//	public Tweet() {
+//		super();
+//	}
+//	
+//	public String getImageUrl() {
+//		return imageUrl;
+//	}
+//	
+//	public void setImageUrl(String imageUrl) {
+//		this.imageUrl = imageUrl;
+//	}
+//	
+//	public static List<Tweet> getAll() {
+//		return new Select().from(Tweet.class).execute();
+//	}
+//
+//	public static void deleteAll() {
+//		new Delete().from(Tweet.class).execute();
+//	}
 }

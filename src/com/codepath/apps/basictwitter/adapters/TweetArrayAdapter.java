@@ -1,4 +1,4 @@
-package com.codepath.apps.basictwitter;
+package com.codepath.apps.basictwitter.adapters;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,6 +9,7 @@ import org.ocpsoft.prettytime.PrettyTime;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codepath.apps.basictwitter.R;
+import com.codepath.apps.basictwitter.R.color;
+import com.codepath.apps.basictwitter.R.id;
+import com.codepath.apps.basictwitter.R.layout;
+import com.codepath.apps.basictwitter.UserProfileActivity;
 import com.codepath.apps.basictwitter.models.Tweet;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -31,7 +37,7 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// Get the data item for position
-		Tweet tweet = getItem(position);
+		final Tweet tweet = getItem(position);
 		// Find an inflate the template
 		View v;
 		if (convertView == null){
@@ -58,6 +64,16 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		tvName.setTextColor(R.color.Gray);
 		tvTimeStamp.setText(setToDays(tweet.getCreatedAt()));
 		tvTimeStamp.setTextColor(R.color.Gray);
+		
+		ivProfileImage.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(getContext(), UserProfileActivity.class);
+				i.putExtra("screen_name", tweet.getUser().getScreenName());
+				getContext().startActivity(i);
+			}
+		});
 		return v;
 	}
 

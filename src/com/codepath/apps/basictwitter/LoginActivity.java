@@ -6,6 +6,8 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 
+
+import com.codepath.apps.basictwitter.restcalls.TwitterClient;
 //import com.codepath.apps.basictwitter.R;
 import com.codepath.oauth.OAuthLoginActivity;
 

@@ -1,5 +1,6 @@
 package com.codepath.apps.basictwitter;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -15,7 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.apps.basictwitter.models.User;
+import com.codepath.apps.basictwitter.restcalls.TwitterApplication;
+import com.codepath.apps.basictwitter.restcalls.TwitterClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.squareup.picasso.Picasso;
 
 public class TweetActivity extends Activity {
@@ -34,37 +38,33 @@ public class TweetActivity extends Activity {
 		setContentView(R.layout.activity_tweet);
 		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		initializeVariables();
-		
+		initializeVariables();	
 		getWindow().setSoftInputMode(LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-		verifyCredentials();
-		setEditText();
-		editTextListener();
-		
+
 	}
 
-	private void editTextListener() {
-		etTweet.addTextChangedListener(new TextWatcher() {
-			
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				setEditText();
-			}
-			
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-	}
+//	private void editTextListener() {
+//		etTweet.addTextChangedListener(new TextWatcher() {
+//			
+//			@Override
+//			public void onTextChanged(CharSequence s, int start, int before, int count) {
+//				setEditText();
+//			}
+//			
+//			@Override
+//			public void beforeTextChanged(CharSequence s, int start, int count,
+//					int after) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//			
+//			@Override
+//			public void afterTextChanged(Editable s) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//		});
+//	}
 
 	private void setEditText() {
 		int chk = MAX_CHARS - etTweet.getText().toString().length();
@@ -72,30 +72,44 @@ public class TweetActivity extends Activity {
 		tvCharCount.setText(limit);
 	}
 
-	private void verifyCredentials() {
-		client = new TwitterClient(this);
-		client.verifyCredentails(new JsonHttpResponseHandler() {
-			@Override
-			public void onSuccess(int arg0, JSONObject json) {
-				user = User.fromJSON(json);
-				tvNameC.setText(user.getName());
-				tvUserNameC.setText(user.getScreenName());
-				Picasso.with(TweetActivity.this).load(user.getProfileImageUrl()).into(ivProfileImageC);
-			}
-			
-			@Override
-			public void onFailure(Throwable arg0) {
-				Toast.makeText(TweetActivity.this, "FAIL to verify credentails ", Toast.LENGTH_SHORT).show();
-			}
-		});
-
-	}
-
-	public void initializeVariables() {
+	private void initializeVariables() {
 		tvUserNameC = (TextView) findViewById(R.id.tvUserNameC);
 		tvNameC = (TextView) findViewById(R.id.tvNameC);
 		tvCharCount = (TextView) findViewById(R.id.tvCharCount);
 		etTweet = (EditText) findViewById(R.id.etTweet);
+		ivProfileImageC = (ImageView) findViewById(R.id.ivProfileImageC);
+		String sName = getIntent().getStringExtra("screen_name");
+		tvUserNameC.setText("@" + sName);
+		
+		TwitterApplication.getRestClient().checkUserProfile(sName, new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(int arg0, JSONObject json) {
+				User u = User.fromJSON(json);
+				ImageLoader.getInstance().displayImage(u.getProfileImageUrl(), ivProfileImageC);
+			}
+		});
+		
+		setEditText();
+		
+		etTweet.addTextChangedListener(new TextWatcher() {
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,int count) {
+				setEditText();
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,int after) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+
+			}
+		});
  	}
 	
 	@Override
@@ -131,7 +145,7 @@ public class TweetActivity extends Activity {
 		client = new TwitterClient(this);
 		String reply = null;
 //		reply = String.valueOf(getIntent().getLongExtra("id", 0));
-		client.postTweet(status, reply, new JsonHttpResponseHandler() {
+		TwitterApplication.getRestClient().postTweet(status, reply, new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(JSONObject json) {
 				setResult(RESULT_OK);

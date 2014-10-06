@@ -3,8 +3,15 @@
     <item
         android:id="@+id/miTweet"
         android:title="Tweet"
-        android:icon="@drawable/pen"
+        android:icon="@drawable/compost_tweet"
         android:onClick="onMiTweet"
         android:showAsAction="always" />
+
+    <item
+        android:id="@+id/miUserProfile"
+        android:icon="@drawable/user_profile"
+        android:onClick="onShowUserProfile"
+        android:showAsAction="always" 
+        android:title="User Profile"/>
 
 </menu>
