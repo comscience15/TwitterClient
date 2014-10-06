@@ -1,9 +1,9 @@
 package com.codepath.apps.basictwitter;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,13 +17,11 @@ import android.widget.Toast;
 
 import com.codepath.apps.basictwitter.models.User;
 import com.codepath.apps.basictwitter.restcalls.TwitterApplication;
-import com.codepath.apps.basictwitter.restcalls.TwitterClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.squareup.picasso.Picasso;
 
 public class TweetActivity extends Activity {
-	private TwitterClient client;
+//	private TwitterClient client;
 	private TextView tvUserNameC, tvNameC, tvCharCount;
 	private ImageView ivProfileImageC;
 	private EditText etTweet;
@@ -142,15 +140,17 @@ public class TweetActivity extends Activity {
 	}
 
 	private void postTweet(String status) {
-		client = new TwitterClient(this);
-		String reply = null;
+//		client = new TwitterClient(this);
 //		reply = String.valueOf(getIntent().getLongExtra("id", 0));
-		TwitterApplication.getRestClient().postTweet(status, reply, new JsonHttpResponseHandler() {
+		TwitterApplication.getRestClient().postTweet(status, new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(JSONObject json) {
-				setResult(RESULT_OK);
+				Toast.makeText(getApplicationContext(), "Tweet Posted", Toast.LENGTH_SHORT).show();
+				Intent data = new Intent();
+				data.putExtra("tweet", json.toString());
+				setResult(RESULT_OK, data);
 				finish();
-				super.onSuccess(json);
+//				super.onSuccess(json);
 			}
 			
 			@Override
@@ -160,7 +160,7 @@ public class TweetActivity extends Activity {
 		});
 	}
 
-	public void showResult(String result) {
-		Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
-	}
+//	public void showResult(String result) {
+//		Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+//	}
 }

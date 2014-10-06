@@ -19,7 +19,9 @@ import com.codepath.apps.basictwitter.restcalls.TwitterApplication;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class TimelineActivity extends FragmentActivity {
-////	PullToRefreshListView ptlTimeline;
+private static final String SCREEN_NAME = "screenname";
+private static final String TWEET = "tweet";
+	////	PullToRefreshListView ptlTimeline;
 //	ListView ptlTimeline;
 //	private TweetArrayAdapter tweetAdapter;
 //	private TwitterClient client;
@@ -215,22 +217,16 @@ public class TimelineActivity extends FragmentActivity {
 //	}
 
 	public void onMiTweet(MenuItem mi) {
-		if (mi.getItemId() == R.id.miTweet) {
-			postTweet();
-		}
-	}
-	
-	private void postTweet() {
 		// Create an intent
 		Intent i = new Intent(TimelineActivity.this, TweetActivity.class);
-		i.putExtra("screen_name", screenName);
+		i.putExtra(SCREEN_NAME, screenName);
 		// Execute intent
 		startActivityForResult(i, TWEET_REQUEST_CODE);
 	}
-	
+
 	public void onShowUserProfile(MenuItem mi) {
 		Intent i = new Intent(this, UserProfileActivity.class);
-		i.putExtra("screenname", screenName);
+		i.putExtra(SCREEN_NAME, screenName);
 		startActivity(i);
 	}
 	
