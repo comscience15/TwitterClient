@@ -1,10 +1,13 @@
 package com.codepath.apps.basictwitter.models;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import static com.codepath.apps.basictwitter.variables.Constants.DATE_FORMAT;
 
 public class Tweet extends BaseModel{
 	private static final long serialVersionUID = 1L;
@@ -14,96 +17,65 @@ public class Tweet extends BaseModel{
 	
 	
 	// create a method extract above values from JSON -- a single tweet
-	public static Tweet fromJSON(JSONObject jsonObject){
-		Tweet tweet = new Tweet();
-		// extract values from the json to populate the member variables
-		try{
-			tweet.jsonObject = jsonObject;
-			tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
-		}catch (JSONException e){
-			e.printStackTrace();
-			return null;
-		}
-		
-		return tweet;
+	public User getUser() {
+		return user;
 	}
 
-	public static ArrayList<Tweet> fromJSON(JSONArray jsonArray) {
-		ArrayList<Tweet> tweets = new ArrayList<Tweet>(jsonArray.length());
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObj = null;
-			try {
-				jsonObj = jsonArray.getJSONObject(i);
-			} catch (Exception e) {
-				e.printStackTrace();
-				continue;
-			}
-			
-			Tweet tweet = Tweet.fromJSON(jsonObj);
-			if (tweet != null) {
-				tweets.add(tweet);
-			}
-		}
-		return tweets;
-	}
-	
-	public static ArrayList<Tweet> fromJSONArray(JSONArray jsonArray) {
-		ArrayList<Tweet> tweets = new ArrayList<Tweet>(jsonArray.length());
-		
-		for (int i = 0; i < jsonArray.length(); i++){
-			JSONObject tweetJson = null;
-			try {
-				tweetJson = jsonArray.getJSONObject(i);
-			} catch(Exception e){
-				e.printStackTrace();
-				continue;
-			}
-			Tweet tweet = Tweet.fromJSON(tweetJson);
-			if (tweet != null){
-				tweets.add(tweet);
-			}
-		}
-		return tweets;
-	}
-	
-	@Override
-	public String toString() {
-		return getBody() + "  " + getUser().getScreenName();
-	}
-	
 	public String getBody(){
 		return getString("text");
 	}
 
-	public long getUId() {
+	public long getId(){
 		return getLong("id");
 	}
 
-	public String getCreatedAt() {
-		return getString("created_at");
+	public boolean isFavorited(){
+		return getBoolean("favorited");
 	}
 
-	public User getUser() {
-		return user;
+	public boolean isRetweeted(){
+		return getBoolean("retweeted");
 	}
 	
-//	public Tweet() {
-//		super();
-//	}
-//	
-//	public String getImageUrl() {
-//		return imageUrl;
-//	}
-//	
-//	public void setImageUrl(String imageUrl) {
-//		this.imageUrl = imageUrl;
-//	}
-//	
-//	public static List<Tweet> getAll() {
-//		return new Select().from(Tweet.class).execute();
-//	}
-//
-//	public static void deleteAll() {
-//		new Delete().from(Tweet.class).execute();
-//	}
+	public Date getCreatedAt(){
+		try{
+            return DATE_FORMAT.parse(getString("created_at"));
+        } catch (ParseException e) { 
+        	e.printStackTrace();
+        	return null;
+        }
+		 
+	}
+
+	public static Tweet fromJSON(JSONObject jo){
+		Tweet tweet = new Tweet();
+		try{
+			tweet.jsonObject = jo;
+			tweet.user = User.fromJSON(jo.getJSONObject("user"));
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+		return tweet;
+	}
+
+	public static ArrayList<Tweet> fromJSON(JSONArray ja){
+		ArrayList<Tweet> tweets = new ArrayList<Tweet>(ja.length());
+
+		for(int i =0 ; i < ja.length(); i++){
+			JSONObject jo = null;
+			try{
+				jo = ja.getJSONObject(i);
+			}catch(JSONException e){
+				e.printStackTrace();
+				continue;
+			}
+			Tweet tweet = Tweet.fromJSON(jo);
+			if(tweet != null){
+				tweets.add(tweet);
+			}
+		}
+		return tweets;
+
+	}
 }

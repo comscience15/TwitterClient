@@ -1,5 +1,8 @@
 package com.codepath.apps.basictwitter;
 
+import static com.codepath.apps.basictwitter.variables.Constants.SCREEN_NAME;
+import static com.codepath.apps.basictwitter.variables.Constants.TWEET_KEY;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,232 +22,68 @@ import com.codepath.apps.basictwitter.restcalls.TwitterApplication;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class TimelineActivity extends FragmentActivity {
-private static final String SCREEN_NAME = "screenname";
-private static final String TWEET = "tweet";
-	////	PullToRefreshListView ptlTimeline;
-//	ListView ptlTimeline;
-//	private TweetArrayAdapter tweetAdapter;
-//	private TwitterClient client;
-//	private ArrayList<Tweet> tweets;
-////	private Context context = this;
-	private int TWEET_REQUEST_CODE = 123;
-	private String screenName;
-	
+
+	private String screenName, name;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_timeline);
-//		setUserNameActionBar();
+
+		setupMyInfo();
 		setupTabs();
-		
-//		ptlTimeline = (PullToRefreshListView) findViewById(R.id.ivTweets);
-//		ptlTimeline = (ListView) findViewById(R.id.lvTweets);
-//		setListView();
-//			Tweet.deleteAll();
-//			populateTimeline(1,0);	
 	}
-	
+
+//    public void showProgressBar() {
+//        setProgressBarIndeterminateVisibility(true); 
+//    }
+//
+//    public void hideProgressBar() {
+//        setProgressBarIndeterminateVisibility(false); 
+//    }
+    
 	private void setupTabs() {
 		ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setDisplayShowTitleEnabled(true);
 
-		Tab home = actionBar
-				.newTab()
+		Tab home = actionBar.newTab()
 				.setText("Home")
 				// .setIcon(R.drawable.ic_home)
 				.setTag("HomeTimelineFragment")
 				.setTabListener(
-				new FragmentTabsListener<HomeTimelineFragment>(R.id.flContainer, this, "Home",
-				HomeTimelineFragment.class));
-		
-		actionBar.addTab(home);
-		actionBar.selectTab(home);
+						new FragmentTabsListener<HomeTimelineFragment>(R.id.flContainer, this, "Home",
+								HomeTimelineFragment.class));
 
-		Tab mention = actionBar
-				.newTab()
+		Tab mention = actionBar.newTab()
 				.setText("Mentions")
 				// .setIcon(R.drawable.ic_mentions)
 				.setTag("MentionsTimelineFragment")
 				.setTabListener(
-					new FragmentTabsListener<MentionsTimelineFragement>(R.id.flContainer, this, "Mentions",
-				MentionsTimelineFragement.class));
+						new FragmentTabsListener<MentionsTimelineFragement>(R.id.flContainer, this, "Mentions",
+								MentionsTimelineFragement.class));
 
+		actionBar.addTab(home);
 		actionBar.addTab(mention);
+		actionBar.selectTab(home);
 	}
 
-//	private void setUserNameActionBar() {
-////		tweets = new ArrayList<Tweet>();
-////		tweetAdapter = new TweetArrayAdapter(this, tweets);
-////		client.getUserSetting(new JsonHttpResponseHandler() {
-//		TwitterApplication.getRestClient().getUserSetting(new JsonHttpResponseHandler() {
-//			@Override
-//			public void onSuccess(JSONObject json) {
-//				try {
-//					screenName = (String) json.get("screen_name");
-//				} catch (JSONException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//				ActionBar ab = getActionBar();
-//				ab.setTitle("@" + screenName);
-//			}
-//		});
-//	}
+	private void setupMyInfo() {
+		TwitterApplication.getRestClient().getAccounSettings(
+				new JsonHttpResponseHandler() {
 
-//	private void setListView() {
-//		tweets = new ArrayList<Tweet>();
-//		tweetAdapter = new TweetArrayAdapter(this, tweets);
-//		ptlTimeline.setAdapter(tweetAdapter);
-//		
-////		ptlTimeline.setOnRefreshListener(new OnRefreshListener() {
-////
-////			@Override
-////			public void onRefresh() {
-////					Tweet.deleteAll();
-////					populateTimeline(1,0);
-////			}
-////		});
-//		
-//		//set endless scroll
-//		ptlTimeline.setOnScrollListener(new OnScrollListener() {
-//			private int visibleThreshold = 5;
-//			private int currentPage = 0;
-//			private int previousTotalItemCount = 0;
-//			private boolean loading = true;
-//			private int startingPageIndex = 0;
-//
-//			@Override
-//			public void onScrollStateChanged(AbsListView view, int scrollState) {
-//				// TODO Auto-generated method stub
-//
-//			}
-//
-//			@Override
-//			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-//				Log.i("DEBUG", "firstVisibleItem = " + firstVisibleItem);
-//				Log.i("DEBUG", "visibleItemCount = " + visibleItemCount);
-//				Log.i("DEBUG", "toalItemCount = " + totalItemCount);
-//				if (totalItemCount < previousTotalItemCount) {
-//					this.currentPage = this.startingPageIndex;
-//					this.previousTotalItemCount = totalItemCount;
-//					if (totalItemCount == 0) {
-//						this.loading = true;
-//					}
-//				}
-//				if (loading && (totalItemCount > previousTotalItemCount)) {
-//					loading = false;
-//					previousTotalItemCount = totalItemCount;
-//					currentPage++;
-//				}
-//				int unseenItemCount = totalItemCount - visibleItemCount;
-//				if (!loading
-//						&& unseenItemCount <= (firstVisibleItem + visibleItemCount)) {
-//					onLoadMore(currentPage + 1, totalItemCount);
-//					loading = true;
-//				}
-//			}
-//
-//			public void onLoadMore(int page, int totalItemCount) {
-//				Log.i("DEBUG", "Fetching page = " + page);
-//				Log.i("DEBUG", "Fetching totalItemCount = " + totalItemCount);
-//				Tweet last = (Tweet) ptlTimeline.getItemAtPosition(totalItemCount - 1);
-//				if (last == null) {
-//					populateTimeline(1, 0);
-//				} else {
-//					populateTimeline(page, last.getUId() - 1);
-//				}
-//			}
-//		});
-//	}
-//
-//	public void populateTimeline(int page, long l){
-//		client = new TwitterClient(context);
-//		if (page <= 1) {
-//			showTimeline();
-//		}else{
-//			// send network request, get back json data
-//			client.getHomeTimeLineMore(l, new JsonHttpResponseHandler() {
-//				// from this case got a single object so use JSONObject from
-//				// GET/home_timeline
-//				@Override
-//				public void onSuccess(int code, JSONArray json) {
-//					JSONArray items = null;
-//					items = json;
-//					ArrayList<Tweet> tweets = Tweet.fromJSON(items);
-//
-//					for (Tweet tweet : tweets) {
-//						tweetAdapter.add(tweet);
-//						tweet.save();
-//					}
-//				}
-//
-//				@Override
-//				public void onFailure(Throwable e, JSONArray s) {
-//					Log.d("debug", e.toString());
-//					Log.d("debug", s.toString());
-//				}
-//			});
-//		}
-//	}
-//	
-//	public void showTimeline() {
-//		//send network request, get back json data
-//		client.getHomeTimeLine(new JsonHttpResponseHandler() {
-//			// from this case got a single object so use JSONObject from GET/home_timeline
-//			@Override
-//			public void onSuccess(JSONArray json) {
-//				tweetAdapter.clear();
-//				tweetAdapter.notifyDataSetInvalidated();
-//				JSONArray items = null;
-//				items = json;
-//				ArrayList<Tweet> tweets = Tweet.fromJSON(items);
-//				
-//				for (Tweet tweet : tweets){
-//					tweetAdapter.add(tweet);
-//					tweet.save();
-//				}
-////				ptlTimeline.onRefreshComplete();
-//			}
-//
-//			@Override
-//			public void onFailure(Throwable e, JSONArray s) {
-//				Log.d("debug", e.toString());
-//				Log.d("debug", s.toString());
-//			}
-//		});
-//	}
-
-	public void onMiTweet(MenuItem mi) {
-		// Create an intent
-		Intent i = new Intent(TimelineActivity.this, TweetActivity.class);
-		i.putExtra(SCREEN_NAME, screenName);
-		// Execute intent
-		startActivityForResult(i, TWEET_REQUEST_CODE);
-	}
-
-	public void onShowUserProfile(MenuItem mi) {
-		Intent i = new Intent(this, UserProfileActivity.class);
-		i.putExtra(SCREEN_NAME, screenName);
-		startActivity(i);
-	}
-	
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == TWEET_REQUEST_CODE && resultCode == RESULT_OK) {
-//			tweetAdapter.clear();
-//			tweetAdapter.notifyDataSetInvalidated();
-//			populateTimeline(1,0);
-			String tweetMsg = data.getStringExtra("tweet");
-			try {
-				Tweet tweet = Tweet.fromJSON(new JSONObject(tweetMsg));
-				HomeTimelineFragment homeTimeLineF = (HomeTimelineFragment) getSupportFragmentManager().findFragmentByTag("Home");
-				homeTimeLineF.getAdapter().insert(tweet, 0);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
+					@Override
+					public void onSuccess(JSONObject jsonObj) {
+						try {
+							screenName = (String) jsonObj.get("screen_name");
+							name = (String) jsonObj.get("name");
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+//						ActionBar actionBar = getActionBar();
+//						actionBar.setTitle("@" + screenName);
+					}
+				});
 	}
 
 	@Override
@@ -253,4 +92,35 @@ private static final String TWEET = "tweet";
 		getMenuInflater().inflate(R.menu.compost, menu);
 		return true;
 	}
+	
+	public void onShowUserProfile(MenuItem mi) {
+		// Create an intent
+		Intent i = new Intent(TimelineActivity.this, UserProfileActivity.class);
+		i.putExtra("screen_name", screenName);
+//		i.putExtra("name", name);
+		startActivity(i);
+	}
+	
+	public void onMiTweet(MenuItem mi) {
+		// Create an intent
+		Intent i = new Intent(TimelineActivity.this, TweetActivity.class);
+		i.putExtra("screen_name", screenName);
+		i.putExtra("name", name);
+		startActivityForResult(i, 200);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == RESULT_OK && requestCode == 200) {
+			String tweetStr = data.getStringExtra("tweet");
+			try {
+				Tweet tweet = Tweet.fromJSON(new JSONObject(tweetStr));
+				HomeTimelineFragment homeTimelineFragment = (HomeTimelineFragment)getSupportFragmentManager().findFragmentByTag("Home");
+				homeTimelineFragment.getAdapter().insert(tweet, 0);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 }

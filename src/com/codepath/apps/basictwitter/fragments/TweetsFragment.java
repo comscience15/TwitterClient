@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.codepath.apps.basictwitter.R;
 import com.codepath.apps.basictwitter.adapters.TweetArrayAdapter;
@@ -16,97 +17,73 @@ import com.codepath.apps.basictwitter.listeners.EndlessScrollListener;
 import com.codepath.apps.basictwitter.models.Tweet;
 
 public abstract class TweetsFragment extends Fragment{
-//	protected PullToRefreshListView ptrTweets;
-	private ListView ptrTweets;
+	private ListView lvTweets;
 	private List<Tweet> tweets;
 	protected TweetArrayAdapter adapter;
-//	private ProfileImageListener imgListener;
-//	private TwitterArrayAdapter tArrAdapter;
+
+	public TweetArrayAdapter getAdapter() {
+		return adapter;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		tArrAdapter = new TwitterArrayAdapter(getActivity(), new ArrayList<Tweet>());
-//		setProfileListener(imgListener);
-		initialVariables();
-	}
-
-	private void initialVariables() {
 		tweets = new ArrayList<Tweet>();
 		adapter = new TweetArrayAdapter(getActivity(), tweets);
 	}
-
+	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-		// inflate layout
-		View v = inflater.inflate(R.layout.fragment_tweets, container, false);
-		// Assign our view references
-		ptrTweets = (ListView) v.findViewById(R.id.lvTweets);
-		ptrTweets.setAdapter(adapter);
-		fetchData(0);
-		
-		ptrTweets.setOnScrollListener(new EndlessScrollListener() {
-
-			@Override
-			public void onLoadMore(int page, int totalItemCount) {
-				fetchData(tweets.get(tweets.size() - 1).getUId() - 1);
-			}
-			
-		});
-		
-//		ptrTweets.setOnRefreshListener(new OnRefreshListener() {
-//			
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.fragment_tweets, container, false);
+		lvTweets = (ListView) view.findViewById(R.id.lvTweets);
+		lvTweets.setAdapter(adapter);
+		setUpTimelineView();
+		setUpScrolling();
+		//setUpOnClickListner(view);
+		return view;
+	}
+	
+//	private void setUpOnClickListner(View view) {
+//		lvTweets.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
 //			@Override
-//			public void onRefresh() {
-//				populateTimeLine(0, getTwitterHandler(true));
+//			public void onItemClick(AdapterView<?> arg0, View tweetItemView, int position,
+//					long id) {
+//				Toast.makeText(getActivity(), "Hello", Toast.LENGTH_SHORT).show();
+//				LinearLayout ll = (LinearLayout)tweetItemView.findViewById(R.id.llTweetItem);
+//				
+//				ImageView im = (ImageView)ll.findViewById(R.id.ivProfile);
+//				Toast.makeText(getActivity(), "Hello-" +im, Toast.LENGTH_SHORT).show();
+//				start Intent now.....
 //			}
+//			
 //		});
 //		
-//		populateTimeLine(0, getTwitterHandler(true));
-		// return the layout view
-		return v;
-	}
-	
-	public TweetArrayAdapter getAdapter() {
-		return adapter;
-	}
-	
-	public abstract void fetchData(long max_id);
+//	}
 
-//	protected abstract void populateTimeLine(long max_id,AsyncHttpResponseHandler twitterHandler);
-//	
-//	private AsyncHttpResponseHandler getTwitterHandler(final boolean b) {
-//		return new JsonHttpResponseHandler() {
-//			@SuppressWarnings("unused")
-//			public void onSuccess(JSONArray response) {
-//				List<Tweet> tweets = Tweet.fromJSON(response);
-//				if (b) {
-//					getAdapter().clear();
-//				}
-//				getAdapter().addAll(tweets);
-////				ptrTweets.onRefreshComplete();
-//			}
-//			
-//			@SuppressWarnings("unused")
-//			public void onFailure(Throwable throwable, JSONArray json) {
-////				ptrTweets.onRefreshComplete();
-//			}
-//		};
-//	}
-//
-//	public TwitterArrayAdapter getAdapter() {
-//		return tArrAdapter;
-//	}
-//
-////	// Delegate the adding to the internal adapter <-- this way is prefer cause minimize of calling (numbers of dots)
-////	public void addAll(ArrayList<Tweet> tweets) {
-////		ptrTweets.addAll(tweets);
-////	}
-////	
-//	public void setProfileListener(ProfileImageListener imgListener) {
-//		this.imgListener = imgListener;
-//		if (tArrAdapter != null) {
-//			tArrAdapter.setProfileListener(imgListener);
-//		}
-//	}
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+	}
+	
+	private void setUpTimelineView() {
+		loadTweets(0);
+	}
+
+	private void setUpScrolling() {
+		lvTweets.setOnScrollListener(new EndlessScrollListener() {
+			@Override
+			public void onLoadMore(int page, int totalItemsCount) {
+				loadTweets(tweets.get(tweets.size() - 1).getId() - 1);
+			}
+		});
+	}
+	
+	public void showProfile(View v){
+		Toast.makeText(getActivity(), "Hello", Toast.LENGTH_SHORT).show();
+	}
+	
+	public abstract void loadTweets(long maxId);
+
 }

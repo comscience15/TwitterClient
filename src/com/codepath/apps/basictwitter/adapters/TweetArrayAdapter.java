@@ -1,11 +1,7 @@
 package com.codepath.apps.basictwitter.adapters;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-
-import org.ocpsoft.prettytime.PrettyTime;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -17,12 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.codepath.apps.basictwitter.R;
-import com.codepath.apps.basictwitter.R.color;
-import com.codepath.apps.basictwitter.R.id;
-import com.codepath.apps.basictwitter.R.layout;
 import com.codepath.apps.basictwitter.UserProfileActivity;
 import com.codepath.apps.basictwitter.models.Tweet;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -32,35 +24,47 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		super(context, 0, tweets);
 	}
 
-	// use getView is how data item is get translated into actual view display on listview
 	@SuppressLint("ResourceAsColor")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// Get the data item for position
-		final Tweet tweet = getItem(position);
-		// Find an inflate the template
-		View v;
-		if (convertView == null){
-			LayoutInflater inflator = LayoutInflater.from(getContext());
-			v = inflator.inflate(R.layout.tweet_items, parent, false);
-		} else {
-			v = convertView;
+		View v = convertView;
+		if (v == null){
+			LayoutInflater inflater = LayoutInflater.from(getContext());
+			v= inflater.inflate(R.layout.tweet_items, null);
 		}
+		
+		final Tweet tweet = getItem(position);
+		
+//		ImageView ivProfileImage = (ImageView)view.findViewById(R.id.ivProfileImage);
+//		ImageLoader.getInstance().displayImage(tweet.getUser().getProfileImageUrl(), ivProfileImage);
+//		
+//		TextView tvName = (TextView)view.findViewById(R.id.tvName);
+//		String formattedName = "<b>" + tweet.getUser().getName() + "</b>"
+//				+ "<small> <font color = '#777777'>@"
+//				+ tweet.getUser().getScreenName() + "</font></small>";
+//		tvName.setText(Html.fromHtml(formattedName));
+//
+//		TextView tvBody = (TextView) view.findViewById(R.id.tvBody);
+//		tvBody.setText(Html.fromHtml(tweet.getBody()));
+//		
+//		TextView tvTimeStamp = (TextView) view.findViewById(R.id.tvTimeStamp);
+//		tvTimeStamp.setText(getDuration(tweet.getCreatedAt()));
+		
 		// Find the views within template
 		ImageView ivProfileImage = (ImageView) v.findViewById(R.id.ivProfileImage);
 		TextView tvUserName = (TextView) v.findViewById(R.id.tvUserName);
 		TextView tvBody = (TextView) v.findViewById(R.id.tvBody);
 		ImageLoader imageLoader = ImageLoader.getInstance();
-		
+
 		TextView tvName = (TextView) v.findViewById(R.id.tvName);
 		TextView tvTimeStamp = (TextView) v.findViewById(R.id.tvTimeStamp);
-		
+
 		// Populate views with tweet data
-		imageLoader.displayImage(tweet.getUser().getProfileImageUrl(), ivProfileImage);
+		imageLoader.displayImage(tweet.getUser().getProfileImageUrl(),ivProfileImage);
 		tvUserName.setText(tweet.getUser().getName());
 		tvBody.setText(tweet.getBody());
-		
-		tvName.setText(tweet.getUser().getScreenName());
+
+		tvName.setText("@" + tweet.getUser().getScreenName());
 		tvName.setTextColor(R.color.Gray);
 		tvTimeStamp.setText(setToDays(tweet.getCreatedAt()));
 		tvTimeStamp.setTextColor(R.color.Gray);
@@ -76,25 +80,23 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		});
 		return v;
 	}
-
-	private String setToDays(String postedTime) {
-		String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
-		SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
-		sf.setLenient(true);
-		
-		String relativeDate = "";
-		long dateMillis = 0;
-		try {
-			dateMillis = sf.parse(postedTime).getTime();
-		} catch (java.text.ParseException e) {
-			e.printStackTrace();
+	
+	private String setToDays(Date createdAt) {
+		if(createdAt == null){
+			return "";
 		}
-		relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
-		String relativeTimeInt = relativeDate.substring(0,relativeDate.indexOf(" "));
-		String relativeTimeStr = relativeDate.substring(relativeDate.indexOf(" ") + 1, relativeDate.indexOf(" ") + 2);
-
-		return relativeTimeInt + relativeTimeStr;
+		String date = (String) DateUtils.getRelativeDateTimeString(
+                getContext(), createdAt.getTime(), DateUtils.MINUTE_IN_MILLIS,
+                DateUtils.WEEK_IN_MILLIS, 0);
+		String time = date.split(",")[0];
+		time = time.replace(" ago", "")
+				.replace(" minutes", "m")
+				.replace(" minute", "m")
+				.replace(" hours", "h")
+				.replace(" hour", "h")
+				.replace("yesterday", "1d")
+				.replace(" days", "d");
+		
+		return time;
 	}
-	
-	
 }
