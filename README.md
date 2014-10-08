@@ -33,23 +33,22 @@ The following libraries are used to make this possible:
 
 Completed User Stories:
 
-  - [x] Required: User can sign in to Twitter using OAuth login
-  - [x] Required:User should be displayed the username, name, and body for each tweet
-  - [x] Required: User should be displayed the relative timestamp for each tweet "8m", "7h"
-  - [x] Required: User can view more tweets as they scroll with infinite pagination
-  - [x] Optional: Links in tweets are clickable and will launch the web browser
-  - [x] Required: User can click a “Compose” icon in the Action Bar on the top right
-  - [x] Required: User can then enter a new tweet and post this to twitter
-  - [ ] Required: User is taken back to home timeline with new tweet visible in timeline
-  - [x] Optional: User can see a counter with total number of characters left for tweet
-  - [/] Advanced: User can refresh tweets timeline by pulling down to refresh (i.e pull-to-refresh) -- partially
-  - [ ] Advanced: Tweets are persisted into sqlite and can be displayed from the local DB
-  - [ ] Advanced: User can tap a tweet to display a "detailed" view of that tweet
-  - [ ] Advanced: User can select "reply" from detail view to respond to a tweet
-  - [x] Advanced: Improve the user interface and theme the app to feel "twitter branded"
-  - [ ] Bonus: User can see embedded image media within the tweet detail view
-  - [ ] Bonus: Compose activity is replaced with a modal overlay
-
+  - [x] Required: Includes all required user stories from Week 3 Twitter Client
+  - [x] Required: User can view their home timeline tweets
+  - [x] Required: User can view the recent mentions of their username
+  - [x] Required: User can scroll to bottom of either of these lists and new tweets will load ("infinite scroll")
+  - [x] Optional: Implement tabs in a gingerbread-compatible approach
+  - [x] Required: User can see picture, tagline, # of followers, # of following, and tweets on their profile
+  - [x] Required: User can see picture, tagline, # of followers, # of following, and tweets of clicked user
+  - [x] Required: Profile view should include that user's timeline
+  - [x] Optional: User can view following / followers list through the profile
+  - [ ] Advanced: Robust error handling, check if internet is available, handle error cases, network failures 
+  - [ ] Advanced: When a network request is sent, user sees an indeterminate progress indicator
+  - [ ] Advanced: The user that wrote the original tweet is automatically "@" replied in compose
+  - [ ] Advanced: User can click on a tweet to be taken to a "detail view" of that tweet
+  - [x] Advanced: Improve the user interface and theme the app to feel twitter branded
+  - [ ] Advanced: User can search for tweets matching a particular query and see results
+  - [ ] Bonus: User can view their direct messages (or send new ones)
  
 Walkthrough of all users stories:
 
