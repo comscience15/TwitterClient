@@ -1,16 +1,19 @@
 package com.codepath.apps.basictwitter.models;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import static com.codepath.apps.basictwitter.variables.Constants.DATE_FORMAT;
+
+//import static com.codepath.apps.basictwitter.variables.Constants.DATE_FORMAT;
 
 public class Tweet extends BaseModel{
 	private static final long serialVersionUID = 1L;
+	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZZZ yyyy");
 //	private long id;
 //	private String body, createdAt, handle, imageUrl, name;
 	private User user;

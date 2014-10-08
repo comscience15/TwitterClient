@@ -43,24 +43,6 @@ public abstract class TweetsFragment extends Fragment{
 		//setUpOnClickListner(view);
 		return view;
 	}
-	
-//	private void setUpOnClickListner(View view) {
-//		lvTweets.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//			@Override
-//			public void onItemClick(AdapterView<?> arg0, View tweetItemView, int position,
-//					long id) {
-//				Toast.makeText(getActivity(), "Hello", Toast.LENGTH_SHORT).show();
-//				LinearLayout ll = (LinearLayout)tweetItemView.findViewById(R.id.llTweetItem);
-//				
-//				ImageView im = (ImageView)ll.findViewById(R.id.ivProfile);
-//				Toast.makeText(getActivity(), "Hello-" +im, Toast.LENGTH_SHORT).show();
-//				start Intent now.....
-//			}
-//			
-//		});
-//		
-//	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {

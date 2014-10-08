@@ -21,7 +21,7 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/ivProfileImage"
         android:textStyle="bold"
-        android:textSize="8dp"
+        android:textSize="12dp"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:paddingTop="10dp"
@@ -35,9 +35,11 @@
         android:layout_alignLeft="@+id/tvUserName"
         android:layout_below="@+id/tvUserName"
         android:text="@string/body" 
-        android:textSize="8dp"
+        android:textSize="12dp"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="10dp"
         android:autoLink="all"
         android:linksClickable="true"/>
     
@@ -47,12 +49,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/tvUserName"
-        android:textSize="8dp"
+        android:textSize="12dp"
+        android:maxLines="1"
         android:ellipsize="end"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:paddingStart="5dp"
-        android:paddingEnd="5dp"
+        android:paddingEnd="1dp"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:text="@string/name_label" />
@@ -63,13 +66,21 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:paddingLeft="10dp"
+        android:paddingLeft="20dp"
         android:paddingRight="10dp"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:text="@string/timestamp_label"
-        android:textSize="8dp" />
+        android:textSize="12dp" />
+
+    <ImageView
+        android:id="@+id/imgReply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvBody"
+        android:layout_below="@+id/tvBody"
+        android:src="@drawable/ic_reply" />
 
 </RelativeLayout>
