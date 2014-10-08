@@ -53,7 +53,7 @@ Completed User Stories:
  
 Walkthrough of all users stories:
 
-![Video Walkthrough](twitter.gif)
+![Video Walkthrough](twitterFragment.gif)
 
 GIF created with [LiceCap]
 
